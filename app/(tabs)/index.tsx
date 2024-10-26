@@ -1,56 +1,100 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet, Platform, Text, View } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { SafeAreaView } from 'react-native-safe-area-context';
+// import {Picker, PickerIOS} from '@react-native-picker/picker';
+import { useState } from 'react';
+import RNPickerSelect from 'react-native-picker-select';
+
+import { DatePicker } from '@/components/nativewindui/DatePicker';
+import { Picker, PickerItem } from '@/components/nativewindui/Picker';
+
+
 
 export default function HomeScreen() {
+  const [date, setDate] = useState(new Date());
+  const [picker, setPicker] = useState('blue');
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
+    <SafeAreaView style={styles.container}>
+      {/* Page Ajout d'une dépense (formulaire) */}
+      
+      {/* <ThemedView style={styles.titleContainer}> */}
+        <Text style={styles.pageTitle}>Ajout d'une dépense</Text>
+
         <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+
+        <View style={styles.catSelectContainer}>
+          <Text>Catégorie</Text>
+          
+          {/* <Picker
+            selectedValue={selectedLanguage}
+            style={{ height: 50, width: 'auto' }}
+            onValueChange={(itemValue, itemIndex) =>
+              setSelectedLanguage(itemValue)
+            }>
+            <Picker.Item label="Java" value="java" />
+            <Picker.Item label="JavaScript" value="js" />
+          </Picker> */}
+          <Picker selectedValue={picker} onValueChange={(itemValue) => setPicker(itemValue)}>
+            <PickerItem
+              label="Red"
+              value="red"
+              color="red"
+            />
+            <PickerItem
+              label="Blue"
+              value="blue"
+              color="blue"
+            />
+          </Picker>
+          <DatePicker
+            value={date}
+            mode="datetime"
+            onChange={(ev) => {
+                setDate(new Date(ev.nativeEvent.timestamp));
+            }}
+            />
+
+        </View>
+
+        {/* Form Select for category */}
+        {/* <ThemedText>Catégorie</ThemedText> */}
+        {/* <ThemedView>
+          <Text>Form Select</Text> */}
+
+          {/* Form Input for amount */}
+      {/* </ThemedView> */}
+
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  pageTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  catSelectContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    // display: 'flex',
+    gap: 8,
+  },
+  container: {
+    flex: 1,
+    // backgroundColor: 'black',
+    alignItems: 'center',
+    // color: 'white',
+    backgroundColor: 'grey',
+    color: 'black',
+
+    // justifyContent: 'center',
+  },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
